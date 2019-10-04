@@ -1,0 +1,37 @@
+mutation{
+  createProduct(name:"", description: ""){
+    name, description
+  }
+}
+
+mutation {
+  updateNombreProducto(id:"3", name:"Laptop VWA-L005") {
+    name
+  }
+}
+
+mutation {
+  destroyProduct(id:2){
+    name,
+    description
+  }
+}
+
+mutation{
+	editProduct(id:1, name:"", description:"" ){
+    name, description
+  }
+}
+
+
+{
+  product(id:2){
+    name,
+    description
+}
+
+{
+  products{
+    id, name, description
+  }
+}
