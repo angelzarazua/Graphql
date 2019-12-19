@@ -18,47 +18,51 @@ exports.db = db;
 
 const addProduct = (name, description) => {
     db.one(`INSERT INTO products(name, description) VALUES ('${name}', '${description}') RETURNING name,description`)
-    .then(res => {
-        console.log(res);
+        .then(res => {
+            console.log(res);
+        });
+    return ({
+        name: name,
+        description: description
     });
-    return (
-        {name: name, description: description}
-    );
 }
 
 const getProducts = () => {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
         db.any('SELECT * FROM products')
-        .then(res => {
-            console.log(res);
-            return resolve(
-                res
-            )
-        });
+            .then(res => {
+                console.log(res);
+                return resolve(
+                    res
+                )
+            });
     })
 };
 
 const getProduct = (id) => {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
         db.one(`SELECT id, name, description FROM products WHERE id='${id}'`)
-        .then(res => {
-            console.log(res);
-            return resolve(
-                {name: res.name, description: res.description}
-            )
-        }).catch(error=>console.error())
+            .then(res => {
+                console.log(res);
+                return resolve({
+                    name: res.name,
+                    description: res.description
+                })
+            }).catch(error => console.error())
     })
 }
 
 const destroyProduct = (id) => {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
         db.one(`DELETE FROM products WHERE id=${id} RETURNING id, name,description`)
-        .then(res => {
-            console.log(res);
-            return resolve(
-                {id: res.id, name: res.name, description: res.description}
-            )
-        })
+            .then(res => {
+                console.log(res);
+                return resolve({
+                    id: res.id,
+                    name: res.name,
+                    description: res.description
+                })
+            })
     })
 }
 
@@ -66,13 +70,14 @@ const destroyProduct = (id) => {
 //, function(error, results)
 
 const editProduct = (id, name, description) => {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
         db.one(`UPDATE products SET name='${name}', description='${description}' WHERE id=${id} RETURNING id, name,description`)
             .then(res => {
                 console.log(res);
-                return resolve(
-                    {name: res.name, description: res.description}
-                )
+                return resolve({
+                    name: res.name,
+                    description: res.description
+                })
             });
     })
 }
@@ -132,4 +137,3 @@ module.exports = {
 //     products = [...products, newProduct];
 //     return {...newProduct };
 // }
-
